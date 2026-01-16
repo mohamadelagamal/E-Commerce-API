@@ -3,13 +3,16 @@ const logger = require('../utils/logger');
 
 const connectDB = async () => {
     try {
-        if (!process.env.MONGODB_URI) {
-            console.error('❌ MONGODB_URI is not defined in environment variables');
-            logger.error('MONGODB_URI is not defined');
-            return null; // Don't crash, just return null
+        // ⚠️ TEMPORARY FALLBACK: Use provided URI if env var is missing
+        // TODO: Remove this fallback after configuring Hostinger Environment Variables
+        const uri = process.env.MONGODB_URI || "mongodb+srv://mohamadelgamaltech_db_user:os0FEJURXsTpvJ4Z@cluster0.ickywlq.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0";
+
+        if (!uri) {
+            console.error('❌ MONGODB_URI is not defined and no fallback available');
+            return null;
         }
 
-        const conn = await mongoose.connect(process.env.MONGODB_URI);
+        const conn = await mongoose.connect(uri);
 
         logger.info(`MongoDB Connected: ${conn.connection.host}`);
         console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
