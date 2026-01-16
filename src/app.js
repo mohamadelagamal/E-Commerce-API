@@ -54,7 +54,7 @@ app.get('/health', (req, res) => {
     res.status(200).json({
         status: 'success',
         message: 'Server is running',
-        version: '1.1.0 (Fix 503)',
+        version: '1.2.0 (DB Debug)',
         last_updated: new Date().toISOString(),
         database: statusMap[dbStatus] || 'unknown',
         environment: process.env.NODE_ENV || 'development',
