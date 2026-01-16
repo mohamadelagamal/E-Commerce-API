@@ -2,6 +2,8 @@
 
 A professional, production-ready E-Commerce backend API built with **Node.js**, **Express.js**, and **MongoDB Atlas**. Features automated deployment to Hostinger via GitHub Actions.
 
+**🌐 Live API**: [https://shopapi.kammelhatwsl.com/api/v1](https://shopapi.kammelhatwsl.com/api/v1)
+
 [![Deploy to Hostinger](https://github.com/mohamadelagamal/E-Commerce-API/actions/workflows/deploy-to-hostinger.yml/badge.svg)](https://github.com/mohamadelagamal/E-Commerce-API/actions/workflows/deploy-to-hostinger.yml)
 
 ---

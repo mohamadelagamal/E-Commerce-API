@@ -40,11 +40,24 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Health check endpoint
+// Health check endpoint
 app.get('/health', (req, res) => {
+    const mongoose = require('mongoose');
+    const dbStatus = mongoose.connection.readyState;
+    const statusMap = {
+        0: 'disconnected',
+        1: 'connected',
+        2: 'connecting',
+        3: 'disconnecting'
+    };
+
     res.status(200).json({
         status: 'success',
         message: 'Server is running',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        database: statusMap[dbStatus] || 'unknown',
+        environment: process.env.NODE_ENV || 'development',
+        port: process.env.PORT || 'unknown'
     });
 });
 
