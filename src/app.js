@@ -63,18 +63,26 @@ app.get('/health', (req, res) => {
 });
 
 // Helper endpoint to get server IP (for MongoDB Whitelisting)
-app.get('/ip', async (req, res) => {
-    try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        res.status(200).json({
-            ip: data.ip,
-            message: "⚠️ COPY THIS IP AND ADD IT TO MONGODB ATLAS NETWORK ACCESS ⚠️",
-            instructions: "Go to MongoDB Atlas -> Network Access -> Add IP Address"
+app.get('/ip', (req, res) => {
+    const https = require('https');
+    https.get('https://api.ipify.org?format=json', (resp) => {
+        let data = '';
+        resp.on('data', (chunk) => { data += chunk; });
+        resp.on('end', () => {
+            try {
+                const ipData = JSON.parse(data);
+                res.status(200).json({
+                    ip: ipData.ip,
+                    message: "⚠️ COPY THIS IP AND ADD IT TO MONGODB ATLAS NETWORK ACCESS ⚠️",
+                    instructions: "Go to MongoDB Atlas -> Network Access -> Add IP Address"
+                });
+            } catch (e) {
+                res.status(500).json({ error: "Could not parse IP: " + e.message });
+            }
         });
-    } catch (error) {
-        res.status(500).json({ error: "Could not fetch IP: " + error.message });
-    }
+    }).on('error', (err) => {
+        res.status(500).json({ error: "Could not fetch IP: " + err.message });
+    });
 });
 
 // Serve static files
