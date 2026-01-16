@@ -62,6 +62,21 @@ app.get('/health', (req, res) => {
     });
 });
 
+// Helper endpoint to get server IP (for MongoDB Whitelisting)
+app.get('/ip', async (req, res) => {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        res.status(200).json({
+            ip: data.ip,
+            message: "⚠️ COPY THIS IP AND ADD IT TO MONGODB ATLAS NETWORK ACCESS ⚠️",
+            instructions: "Go to MongoDB Atlas -> Network Access -> Add IP Address"
+        });
+    } catch (error) {
+        res.status(500).json({ error: "Could not fetch IP: " + error.message });
+    }
+});
+
 // Serve static files
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
