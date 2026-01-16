@@ -11,9 +11,9 @@ const config = {
     },
 
     jwt: {
-        secret: process.env.JWT_SECRET,
+        secret: process.env.JWT_SECRET || 'ecommerce_jwt_secret_key_2026_TEMP_FALLBACK_CHANGE_IN_PRODUCTION',
         expire: process.env.JWT_EXPIRE || '7d',
-        refreshSecret: process.env.JWT_REFRESH_SECRET,
+        refreshSecret: process.env.JWT_REFRESH_SECRET || 'ecommerce_refresh_secret_key_2026_TEMP_FALLBACK_CHANGE_IN_PRODUCTION',
         refreshExpire: process.env.JWT_REFRESH_EXPIRE || '30d'
     },
 
