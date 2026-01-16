@@ -12,14 +12,18 @@ const connectDB = async () => {
             return null;
         }
 
-        const conn = await mongoose.connect(uri);
+        const conn = await mongoose.connect(uri, {
+            serverSelectionTimeoutMS: 5000, // Fail after 5 seconds
+            socketTimeoutMS: 45000,
+            family: 4 // Use IPv4, skip IPv6
+        });
 
         logger.info(`MongoDB Connected: ${conn.connection.host}`);
         console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
         return conn;
     } catch (error) {
         logger.error(`MongoDB Connection Error: ${error.message}`);
-        console.error(`❌ MongoDB Connection Error: ${error.message}`);
+        console.error(`❌ MongoDB Connection Error: ${error.message} (Check IP Whitelist!)`);
         // Do NOT exit process here, let the server start so we can inspect logs
         // process.exit(1); 
         return null;

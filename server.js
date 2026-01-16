@@ -9,9 +9,21 @@ const PORT = process.env.PORT || 3000;
 connectDB();
 
 // Start server
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, async () => {
   logger.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
   console.log(`🚀 Server running on http://localhost:${PORT}`);
+
+  // Log Public IP for MongoDB Whitelisting
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    console.log('================================================');
+    console.log(`🌍 SERVER PUBLIC IP: ${data.ip}`);
+    console.log('⚠️  ADD THIS IP TO MONGODB ATLAS NETWORK ACCESS');
+    console.log('================================================');
+  } catch (err) {
+    console.error('Failed to resolve public IP:', err.message);
+  }
 });
 
 // Handle unhandled promise rejections
